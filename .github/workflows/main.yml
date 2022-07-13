@@ -9,5 +9,5 @@ jobs:
       - name: Count New Lines in JavaScript
         uses: ./
         with:
-          file_name_regex: "^(.*)\\.js$"
-          file_content_regex: "\\n"
+          file_name_regex: '^(.*)\.js$'
+          file_content_regex: '\n'
