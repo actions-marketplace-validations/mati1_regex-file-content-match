@@ -1,5 +1,11 @@
-name: 'Helio Adoption'
-description: 'Post Helio Adoption metric to DataDog'
+name: 'Regex Content Count'
+description: 'Match Regex(s) in the Content'
+inputs:
+  fileNameRegex: "^(.*)\.kt$"
+  fileContentRegex: "import com\.glovoapp\.helio\.(.*)"
+outputs:
+  count:
+    description: 'Matching Count'
 runs:
   using: 'node16'
   main: 'index.js'

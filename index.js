@@ -1,39 +1,31 @@
 const core = require('@actions/core');
-const github = require('@actions/github');
-const { promises: fs } = require("fs");
+const fs = require('fs');
 
-async function getFiles(path = "./") {
-  const entries = await fs.readdir(path, { withFileTypes: true });
+function getFiles(path) {
+  if ((/(^|\/)\.[^\/\.]/g).test(path)) return []
 
-  // Get files within the current directory and add a path key to the file objects
+  const entries = fs.readdirSync(path, { withFileTypes: true });
+
   const files = entries
-    .filter(file => !file.isDirectory()) // Skip directories
+    .filter(file => !file.isDirectory())
     .map(file => ({ ...file, path: path + file.name }));
 
-  // Get folders within the current directory
-  const folders = entries.filter(folder => folder.isDirectory());
-
-  for (const folder of folders)
-    /*
-      Add the found files within the subdirectory to the files array by calling the
-      current function itself
-    */
-    files.push(...await getFiles(`${path}${folder.name}/`));
+  for (const folder of entries.filter(folder => folder.isDirectory()))
+    files.push(...getFiles(`${path}${folder.name}/`));
 
   return files;
 }
 
-// try {
+try {
+  const fileNameRegex = new RegExp(core.getInput('file_name_regex', { required: true }))
+  const fileContentRegex = new RegExp(core.getInput('file_content_regex', { required: true }))
 
-//   const files = await getFiles()
+  const matchesCount = getFiles('./')
+    .filter(file => fileNameRegex.test(file.path))
+    .map(file => (fs.readFileSync(file.path, `utf-8`).match(fileContentRegex) || []).length)
+    .reduce((previousValue, currentValue) => previousValue + currentValue, 0)
 
-//   console.log(files)
-//   //console.log(`Le run succed!`);
-// } catch (error) {
-//   core.setFailed(error.message);
-// }
-
-// Call start
-(async () => {
-  console.log(await (await getFiles()))
-})();
+    core.setOutput('count', matchesCount);
+} catch (error) {
+  core.setFailed(error.message);
+}

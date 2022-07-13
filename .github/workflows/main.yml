@@ -6,5 +6,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Hello world action step
+      - name: Count New Lines in JavaScript
         uses: ./
+        with:
+          file_name_regex: "^(.*)\.js$"
+          file_content_regex: "\n"
