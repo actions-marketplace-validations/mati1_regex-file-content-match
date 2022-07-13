@@ -1,8 +1,8 @@
 name: 'Regex Content Count'
 description: 'Match Regex(s) in the Content'
 inputs:
-  file_name_regex: "^(.*)\.kt$"
-  file_content_regex: "import com\.glovoapp\.helio\.(.*)"
+  file_name_regex: "^(.*)\\.kt$"
+  file_content_regex: "import com\\.glovoapp\\.helio\\.(.*)"
 outputs:
   count:
     description: 'Matching Count'
