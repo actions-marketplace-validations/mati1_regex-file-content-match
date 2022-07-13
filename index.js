@@ -17,8 +17,8 @@ function getFiles(path) {
 }
 
 try {
-  const fileNameRegex = new RegExp(core.getInput('file_name_regex', { required: true }))
-  const fileContentRegex = new RegExp(core.getInput('file_content_regex', { required: true }))
+  const fileNameRegex = new RegExp(core.getInput('fileNameRegex', { required: true }))
+  const fileContentRegex = new RegExp(core.getInput('fileContentRegex', { required: true }))
 
   const matchesCount = getFiles('./')
     .filter(file => fileNameRegex.test(file.path))
