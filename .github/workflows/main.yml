@@ -1,13 +1,21 @@
 on: [push]
 
 jobs:
-  hello_world_job:
+  count_new_lines:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Count New Lines in JavaScript
+        id: count_js_new_lines
+        run: echo "::set-output name=count::$(echo $count)"
         uses: ./
         with:
           fileNameRegex: '^(.*)\.js$'
           fileContentRegex: '\n'
+      - name: Print Count
+        shell: bash
+        run: echo "The count is ${{ steps.count_js_new_lines.outputs.count }}"
+        
+
+        

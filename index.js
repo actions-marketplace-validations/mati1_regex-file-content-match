@@ -24,8 +24,8 @@ try {
     .filter(file => fileNameRegex.test(file.path))
     .map(file => (fs.readFileSync(file.path, `utf-8`).match(fileContentRegex) || []).length)
     .reduce((previousValue, currentValue) => previousValue + currentValue, 0)
-
-    core.setOutput('count', matchesCount);
+  console.log(matchesCount)
+  core.setOutput('count', matchesCount);
 } catch (error) {
   core.setFailed(error.message);
 }
