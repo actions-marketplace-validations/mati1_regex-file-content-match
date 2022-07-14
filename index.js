@@ -4,11 +4,11 @@ const fs = require('fs');
 function getFiles(path) {
   if ((/(^|\/)\.[^\/\.]/g).test(path)) return []
 
-  const entries = fs.readdirSync(path, { withFileTypes: true });
+  const entries = fs.readdirSync(path, {withFileTypes: true});
 
   const files = entries
     .filter(file => !file.isDirectory())
-    .map(file => ({ ...file, path: path + file.name }));
+    .map(file => ({...file, path: path + file.name}));
 
   for (const folder of entries.filter(folder => folder.isDirectory()))
     files.push(...getFiles(`${path}${folder.name}/`));
@@ -17,8 +17,8 @@ function getFiles(path) {
 }
 
 try {
-  const fileNameRegex = new RegExp(core.getInput('fileNameRegex', { required: true }))
-  const fileContentRegex = new RegExp(core.getInput('fileContentRegex', { required: true }))
+  const fileNameRegex = new RegExp(core.getInput('fileNameRegex', {required: true}))
+  const fileContentRegex = new RegExp(core.getInput('fileContentRegex', {required: true}))
 
   const matchesCount = getFiles('./')
     .filter(file => fileNameRegex.test(file.path))
